@@ -1,0 +1,129 @@
+total:
+  scored:
+    Arsenal: 55
+    Aston Villa: 55
+    Brentford: 40
+    Brighton: 40
+    Burnley: 33
+    Chelsea: 58
+    Crystal Palace: 41
+    Everton: 47
+    Leicester: 68
+    Leeds: 62
+    Liverpool: 68
+    Man City: 83
+    Man Utd: 73
+    Newcastle: 46
+    Norwich: 40
+    Southampton: 47
+    Spurs: 68
+    Watford: 40
+    West Ham: 62
+    Wolves: 36
+  lost:
+    Arsenal: 39
+    Aston Villa: 46
+    Brentford: 60
+    Brighton: 46
+    Burnley: 55
+    Chelsea: 36
+    Crystal Palace: 66
+    Everton: 48
+    Leicester: 50
+    Leeds: 54
+    Liverpool: 42
+    Man City: 32
+    Man Utd: 44
+    Newcastle: 62
+    Norwich: 60
+    Southampton: 68
+    Spurs: 45
+    Watford: 60
+    West Ham: 47
+    Wolves: 52
+home:
+  scored:
+    Arsenal: 24
+    Aston Villa: 29
+    Brentford: 24
+    Brighton: 22
+    Burnley: 14
+    Chelsea: 31
+    Crystal Palace: 20
+    Everton: 24
+    Leicester: 34
+    Leeds: 28
+    Liverpool: 29
+    Man City: 43
+    Man Utd: 38
+    Newcastle: 26
+    Norwich: 24
+    Southampton: 28
+    Spurs: 35
+    Watford: 24
+    West Ham: 32
+    Wolves: 21
+  lost:
+    Arsenal: 21
+    Aston Villa: 25
+    Brentford: 24
+    Brighton: 22
+    Burnley: 27
+    Chelsea: 18
+    Crystal Palace: 32
+    Everton: 28
+    Leicester: 30
+    Leeds: 21
+    Liverpool: 20
+    Man City: 17
+    Man Utd: 28
+    Newcastle: 33
+    Norwich: 24
+    Southampton: 25
+    Spurs: 20
+    Watford: 24
+    West Ham: 22
+    Wolves: 25
+away:
+  scored:
+    Arsenal: 31
+    Aston Villa: 26
+    Brentford: 16
+    Brighton: 18
+    Burnley: 19
+    Chelsea: 27
+    Crystal Palace: 21 
+    Everton: 23
+    Leicester: 34
+    Leeds: 34
+    Liverpool: 39
+    Man City: 40
+    Man Utd: 35
+    Newcastle: 20
+    Norwich: 16
+    Southampton: 19
+    Spurs: 33
+    Watford: 16
+    West Ham: 30
+    Wolves: 15
+  lost:
+    Arsenal: 18
+    Aston Villa: 19
+    Brentford: 36
+    Brighton: 24
+    Burnley: 28
+    Chelsea: 18
+    Crystal Palace: 34
+    Everton: 20
+    Leicester: 20
+    Leeds: 33
+    Liverpool: 22
+    Man City: 15
+    Man Utd: 16
+    Newcastle: 29
+    Norwich: 36
+    Southampton: 43
+    Spurs: 25
+    Watford: 36
+    West Ham: 25
+    Wolves: 27

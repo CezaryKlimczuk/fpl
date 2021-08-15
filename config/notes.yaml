@@ -1,0 +1,7 @@
+value_season: total_points / now_cost
+bonus: total points earned from bonuses
+bps: Bonus Point System, see https://fantasy.premierleague.com/help/rules
+ep_this: Expected points this week
+ep_next: Expected points next week
+form: player’s average score per match, calculated from all matches played by his club in the last 30 days.
+status: a - available, i - injured, u - unavailable, d - doubtful, n - not available
