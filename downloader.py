@@ -9,4 +9,3 @@ if __name__ == "__main__":
     # inserting both dataframes to the db
     insert_dataframe(player_df, "players") 
     insert_dataframe(teams_df, "teams")
-    send_info(subject="FPL database updated", message_content=f"Players table updated with {len(player_df)} rows.\nTeams table updated with {len(teams_df)} rows.")

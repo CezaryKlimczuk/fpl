@@ -68,4 +68,4 @@ def insert_dataframe(input_df: pd.DataFrame, _table_name: str = "players") -> No
     _engine = create_engine(
         f"postgresql://{creds['username']}:{creds['password']}@{creds['host']}:{creds['port']}/{creds['database']}")
     input_df.to_sql(_table_name, _engine, if_exists='append', index=False)
-    send_info(subject="Player table updated", message_content=f"Updated with {len(input_df)} rows")
+    send_info(subject=f"{_table_name.capitalize()} table updated", message_content=f"Updated with {len(input_df)} rows")
