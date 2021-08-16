@@ -1,5 +1,5 @@
 from fantasy_football.api import get_all_players, get_teams 
-from fantasy_football.database.db_connect import insert_dataframe 
+from fantasy_football.data.db_connect import insert_dataframe 
 from fantasy_football.mailer import send_info
 
 

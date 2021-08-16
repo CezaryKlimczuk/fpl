@@ -1,5 +1,5 @@
 private
 analysis
 __pycache__
-data
 *.sql
+*.csv
