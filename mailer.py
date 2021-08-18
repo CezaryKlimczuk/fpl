@@ -31,7 +31,7 @@ def send_info(subject: str, message_content: str) -> None:
     message["From"] = _creds['username']
     message["To"] = _creds['username']
     message["Subject"] = f"FPL-{os.environ['COMPUTERNAME']}: {subject}"
-    message.set_content(message_content)
+    message.add_alternative(message_content, subtype='html')
     try:
         server.send_message(message)
     except Exception as error:

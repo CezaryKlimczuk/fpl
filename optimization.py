@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
+from datetime import date
 from typing import List
 from pulp import LpMaximize, LpProblem, LpStatus, lpSum, LpVariable
 from fantasy_football.api import get_all_players
 from fantasy_football.predictions import GameweekPredictions
+from fantasy_football.data.db_connect import get_query
 
 MAX_BUDGET = 850
 MAX_TEAM_MEMBERS = 3
@@ -119,7 +121,6 @@ def create_model(_df: pd.DataFrame, _target_feature: str, **kwargs):
         model += constraint
 
     # the must-have and must-avoid players
-    print(kwargs)
     if "_must_haves_ids" in kwargs.keys():
         must_haves_constraint = create_must_haves_constraint(players_dict, **kwargs)
         model += must_haves_constraint
@@ -130,14 +131,18 @@ def create_model(_df: pd.DataFrame, _target_feature: str, **kwargs):
     return model
 
 
-def run_optimization(_target_feature: str, **kwargs) -> pd.DataFrame:
-    all_players = get_all_players()
+def run_optimization(_target_feature: str, data_source: str = 'api', **kwargs) -> pd.DataFrame:
+    if data_source == 'api':
+        all_players = get_all_players(**kwargs)
+    elif data_source == 'database': 
+        all_players = get_query(f"SELECT * FROM players WHERE date = '{date.today()}'")
     cols_to_display = ['first_name', 'second_name', 'position', 'team', 'ep_next', 'now_cost', 'total_points', 'selected_by_percent']
-    
+
     model = create_model(all_players, _target_feature, **kwargs)
     model.solve()
+    objective_value = model.objective.value()
     print(f"Status: {model.status}, {LpStatus[model.status]}")
-    print(f"Objective: {model.objective.value()}")
+    print(f"Objective: {objective_value}")
     
     player_ids = []
     for var in model.variables():
@@ -146,8 +151,9 @@ def run_optimization(_target_feature: str, **kwargs) -> pd.DataFrame:
     
     final_team = all_players.loc[player_ids][cols_to_display]
     final_team.sort_values(by='position', key=lambda x: x.map(POSITION_MAP), inplace=True)
-    print(f"Cost: {np.sum(final_team['now_cost'])}")
-    return final_team
+    team_cost = np.sum(final_team['now_cost'])
+    print(f"Cost: {team_cost}")
+    return final_team, objective_value, team_cost
     
 
 if __name__ == '__main__':
@@ -176,5 +182,5 @@ if __name__ == '__main__':
                  "Watford": 3,
                  "West Ham": 2,
                  "Wolves": 3}
-    final_team = run_optimization(target, _pos_limit_dict=pos_dict, _team_limit_dict=team_dict)
+    final_team, _, _ = run_optimization(target, _pos_limit_dict=pos_dict, _team_limit_dict=team_dict)
     print(final_team)
