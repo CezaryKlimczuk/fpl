@@ -24,7 +24,11 @@ def get_the_best_transfer(from_date: date) -> pd.DataFrame:
 
 
 def get_price_increases(from_date: date) -> pd.DataFrame:
-    pass
+    query = f"SELECT today.first_name, today.second_name, today.team, today.position, today.now_cost as cost_today, yesterday.now_cost as cost_yesterday, today.now_cost - yesterday.now_cost as change \
+            FROM (SELECT * FROM players WHERE date = '{from_date}') today FULL JOIN (SELECT * FROM players WHERE date = '{from_date - timedelta(days=1)}') yesterday ON today.photo = yesterday.photo \
+            ORDER BY change DESC;"
+    df_price_changes = get_query(query)
+    return df_price_changes
 
 
 def get_the_best_ep(from_date: date) -> pd.DataFrame:
@@ -36,10 +40,14 @@ if __name__ == '__main__':
     # data fetching
     df_injuries = get_newly_injured_players(date.today())
     final_team, objective_value, team_cost = get_the_best_team()
+    df_price_changes = get_price_increases(date.today())
+    df_price_changes = pd.concat([df_price_changes.head(10), df_price_changes.tail(10)], axis=0)
     # body construction
     message_body.append('<h1>FPL daily report</h1>')
     message_body.append('<h2>New injuries since yesterday</h2>')
     message_body.append(df_injuries.to_html())
+    message_body.append('<h2>Price changes since yesterday:</h2>')
+    message_body.append(df_price_changes.to_html())
     message_body.append('<h2>Best possible team within budget constraint:</h2>')
     message_body.append(final_team.to_html())
     message_body.append(f'<p>Expected score of the optimal team: {str(objective_value)}</p>')
