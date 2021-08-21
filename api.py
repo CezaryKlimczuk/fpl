@@ -28,9 +28,12 @@ def get_all_players() -> pd.DataFrame:
     players.drop(columns=['element_type'], inplace=True)
     for col in players.columns:
         players[col] = pd.to_numeric(players[col], errors='ignore')
-    players.set_index('id', inplace=True)
+    players.set_index('id', inplace=True, drop=False)
+    players.rename(columns={'id': 'player_id'}, inplace=True)
     players['date'] = date.today()
-    players =  players[['date'] + list(players.columns[:-1])]
+    columns = list(players.columns)
+    columns = [col for col in columns if col not in ['date', 'player_id']]
+    players =  players[['date'] + columns + ['player_id']]
     return players
 
 

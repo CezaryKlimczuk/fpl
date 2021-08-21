@@ -131,11 +131,11 @@ def create_model(_df: pd.DataFrame, _target_feature: str, **kwargs):
     return model
 
 
-def run_optimization(_target_feature: str, data_source: str = 'api', **kwargs) -> pd.DataFrame:
+def run_optimization(_target_feature: str, data_source: str = 'api', optimization_date: date = date.today(), **kwargs) -> pd.DataFrame:
     if data_source == 'api':
         all_players = get_all_players(**kwargs)
     elif data_source == 'database': 
-        all_players = get_query(f"SELECT * FROM players WHERE date = '{date.today()}'")
+        all_players = get_query(f"SELECT * FROM players WHERE date = '{optimization_date}'")
     cols_to_display = ['first_name', 'second_name', 'position', 'team', 'ep_next', 'now_cost', 'total_points', 'selected_by_percent']
 
     model = create_model(all_players, _target_feature, **kwargs)
