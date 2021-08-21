@@ -90,6 +90,10 @@ def create_must_avoid_constraint(_players_dict: dict, _must_avoid_ids: List[int]
     return must_avoid_contraint
 
 
+def create_existing_team_constraint(_players_dict: dict, _team_members_ids: List[int], _allowed_changes: int = 1,  **kwargs):
+    must_haves_contraint = (lpSum([_players_dict[_id] for _id in _team_members_ids]) >= 11 - _allowed_changes, f"must_haves_constraint")
+    return must_haves_contraint
+
 
 def create_model(_df: pd.DataFrame, _target_feature: str, **kwargs):
     players_dict = create_player_variables(_df)
@@ -120,20 +124,22 @@ def create_model(_df: pd.DataFrame, _target_feature: str, **kwargs):
     for constraint in position_constraint_list:
         model += constraint
 
-    # the must-have and must-avoid players
+    # the creating player-specific constraints
     if "_must_haves_ids" in kwargs.keys():
         must_haves_constraint = create_must_haves_constraint(players_dict, **kwargs)
         model += must_haves_constraint
     if "_must_avoid_ids" in kwargs.keys():
         must_avoid_contraint = create_must_avoid_constraint(players_dict, **kwargs)
         model += must_avoid_contraint
-
+    if "_team_members_ids" in kwargs.keys():
+        existing_team_contraint = create_existing_team_constraint(players_dict, **kwargs)
+        model += existing_team_contraint
     return model
 
 
 def run_optimization(_target_feature: str, data_source: str = 'api', optimization_date: date = date.today(), **kwargs) -> pd.DataFrame:
     if data_source == 'api':
-        all_players = get_all_players(**kwargs)
+        all_players = get_all_players()
     elif data_source == 'database': 
         all_players = get_query(f"SELECT * FROM players WHERE date = '{optimization_date}'")
     cols_to_display = ['first_name', 'second_name', 'position', 'team', 'ep_next', 'now_cost', 'total_points', 'selected_by_percent']
