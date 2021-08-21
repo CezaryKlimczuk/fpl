@@ -4,10 +4,9 @@ from datetime import date
 from typing import List
 from pulp import LpMaximize, LpProblem, LpStatus, lpSum, LpVariable
 from fantasy_football.api import get_all_players
-from fantasy_football.predictions import GameweekPredictions
 from fantasy_football.data.db_connect import get_query
 
-MAX_BUDGET = 850
+MAX_BUDGET = 825
 MAX_TEAM_MEMBERS = 3
 TEAM_SIZE = 11
 POSITION_CONSTRAINTS = {'GKP': 1,
@@ -40,7 +39,7 @@ POSITION_MAP = {'GKP': 0, 'DEF': 1, 'MID': 2, 'FWD': 3}
 
 
 def create_player_variables(_df: pd.DataFrame) -> dict:
-    all_ids = _df.index.to_list()
+    all_ids = _df['player_id'].to_list()
     players = {_id: LpVariable(name=f"p{_id}", lowBound=0, upBound=1, cat="Integer") for _id in all_ids}
     return players
 
@@ -142,7 +141,7 @@ def run_optimization(_target_feature: str, data_source: str = 'api', optimizatio
         all_players = get_all_players()
     elif data_source == 'database': 
         all_players = get_query(f"SELECT * FROM players WHERE date = '{optimization_date}'")
-    cols_to_display = ['first_name', 'second_name', 'position', 'team', 'ep_next', 'now_cost', 'total_points', 'selected_by_percent']
+    cols_to_display = ['player_id', 'first_name', 'second_name', 'position', 'team', 'ep_next', 'now_cost', 'total_points', 'selected_by_percent']
 
     model = create_model(all_players, _target_feature, **kwargs)
     model.solve()
